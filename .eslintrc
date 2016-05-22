@@ -33,6 +33,7 @@
   },
   "globals": {
     "_": true,
+    "moment": true,
     "THREE": true
   }
 }

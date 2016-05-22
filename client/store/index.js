@@ -15,7 +15,7 @@ const enhanceDispatch = next => (r, state) => {
 const store = createStore(reducer, compose(
   enhanceDispatch,
   install(),
-  window.devToolsExtension ? window.devToolsExtension() : f => f,
+  window.devToolsExtension ? window.devToolsExtension({actionsBlacklist: ['TICK']}) : f => f,
 ))
 
 window.SS.store = store

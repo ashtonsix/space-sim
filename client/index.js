@@ -17,7 +17,8 @@ setTimeout(() => {
 
 function tick(i) {
   store.dispatch('TICK')
-  if (i < 10) window.requestAnimationFrame(tick.bind(null, i + 1))
+  if (i % 100 === 0) console.log(i, moment().format('YYYY-MM-DD HH:mm:ss.SSS'))
+  window.requestAnimationFrame(tick.bind(null, i + 1))
 }
 
 tick(0)
