@@ -13,5 +13,7 @@ export const loop = (state, ...effects) =>
   _loop(state, Effects.batch(effects.map(e =>
     typeof e === 'function' ?
       Effects.promise(() => Promise.resolve(e())) :
-      Effects.constant(e)
+    e ?
+      Effects.constant(e) :
+      Effects.none()
   )))
