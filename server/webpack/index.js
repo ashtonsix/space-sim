@@ -6,7 +6,7 @@ import services from '../_config/services'
 const {PORT} = process.env
 
 new WebpackDevServer(webpack(config()), {
-  proxy: {'*': `http://localhost:${services.static.port}`},
+  proxy: {'*': `http://localhost:${services.entry.port}`},
   noInfo: true,
   filename: 'app.js',
   publicPath: config().output.publicPath,

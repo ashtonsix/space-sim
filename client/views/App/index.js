@@ -1,13 +1,8 @@
 import React from 'react'
 import {connect} from '_utils/redux-plus'
-import {browserHistory} from 'react-router'
 
 const App = connect(state => ({state}))(
 class App extends React.Component {
-  constructor() {
-    super()
-    setTimeout(() => browserHistory.push('/example-location'), 2000)
-  }
   render() {
     return (
       <div>

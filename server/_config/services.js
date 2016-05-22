@@ -20,8 +20,14 @@ export default _.pickBy({
   webpack: !PROD && {
     port: 8000,
   },
-  static: {
+  entry: {
     port: PROD ? 8000 : 8001,
-    instances: PROD ? 1 : 1,
+  },
+  data: {
+    port: 8002,
+  },
+  static: {
+    port: 8003,
+    instances: PROD ? 2 : 1,
   },
 })
