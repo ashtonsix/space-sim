@@ -21,7 +21,6 @@ const api = (requestConfig, updateConfig = s => _.get(s, '0', s)) => (state, act
     generateRequest(requestConfig)(state, action).then(
       response => ({type: `${action.type}_SUCCESS`, payload: response.data, meta: {response}}),
       error => ({type: `${action.type}_FAILURE`, payload: error}))
-  console.log(loop(updateConfig(state, action), effect))
   return loop(updateConfig(state, action), effect)
 }
 
