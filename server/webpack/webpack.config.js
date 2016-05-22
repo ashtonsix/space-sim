@@ -43,9 +43,11 @@ module.exports = (options = {}) => {
             warnings: false,
           },
         })],
-    // allows importing from folders outside the project, useful for developing related modules
+    // allows importing from folders outside the project (with webpack loaders)
+    // useful for developing related modules
     resolveLoader: {root: path.join(process.cwd(), 'node_modules')},
     resolve: {
+      // similar to NODE_PATH on server
       modulesDirectories: ['', 'client', 'node_modules'],
       extensions: ['', '.js'],
       alias: {

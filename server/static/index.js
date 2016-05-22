@@ -22,6 +22,7 @@ express().
   use(morgan('dev')).
   use(favicon(path.join(__dirname, 'public', './favicon.ico'))).
   use('/api/static', express.static(path.join(__dirname, 'public'))).
+  use('/my-endpoint', (req, res) => res.send({data: 5})).
   get('*', (req, res) => res.sendFile(path.join(__dirname, 'public', './index.html'))).
   listen(
     PORT, 'localhost',

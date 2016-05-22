@@ -12,12 +12,24 @@
     // nah mate, no semi
     "semi": [2, "never"],
     "no-unexpected-multiline": 2,
+    // not confusing
+    "no-confusing-arrow": 0,
     // like it like that
     "object-curly-spacing": [2, "never"],
     // some things are private
     "no-underscore-dangle": 0,
     // big screen
     "max-len": [2, 130],
+    // gonna mutate sometimes
+    "no-param-reassign": 0,
+    // not always possible
+    "react/prefer-stateless-function": 0,
+    // do not care
+    "react/prop-types": 0,
+    // NODE_PATH in use
+    "import/no-unresolved": [2, {ignore: ["^server", "^client", "^_utils", "^store"]}],
+    // want custom order plugin
+    "import/order": [2, {"groups": ["builtin", "external", "internal", ["parent", "sibling", "index"]]}]
   },
   "globals": {
     "_": true,

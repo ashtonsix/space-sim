@@ -1,6 +1,6 @@
+import path from 'path'
 import fs from 'fs'
 import fsExtra from 'fs-extra'
-import path from 'path'
 import forever from 'forever-monitor'
 import moment from 'moment'
 import chalk from 'chalk'
@@ -35,10 +35,14 @@ let children = _.chain(services)
           errFile: /^win/.test(process.platform) ? '/NUL' : '/dev/null',
           ...service,
           env: {
+            // chalk doesn't print color outside pipes unless overridden
             FORCE_COLOR: !PROD,
             PORT: service.port ? service.port + i : null,
             FILE: name,
-            NODE_PATH: ['.', `./${name}`].map(v => path.join(__dirname, v)).join(/^win/.test(process.platform) ? ';' : ':'),
+            NODE_PATH:
+              ['../', '.', `./${name}`]
+                .map(v => path.join(__dirname, v))
+                .join(/^win/.test(process.platform) ? ';' : ':'),
             ...service.env,
           },
         }
