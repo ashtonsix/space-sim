@@ -11,7 +11,7 @@ const createPlanet = ({name, position, radius}) => (
       heightSegments={32}
     />
     <meshPhongMaterial
-      color={0xcccccc}
+      color={name === 'earth' ? 0x81b7e7 : 0xcccccc}
       emissive={name === 'sun' ? 0x333333 : 0x000000}
     />
   </mesh>
