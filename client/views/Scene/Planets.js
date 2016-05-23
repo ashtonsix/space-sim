@@ -12,7 +12,7 @@ const createPlanet = ({name, position, radius}) => (
     />
     <meshPhongMaterial
       color={0xcccccc}
-      emissive={name === 'sun' ? 0x666666 : 0x000000}
+      emissive={name === 'sun' ? 0x333333 : 0x000000}
     />
   </mesh>
 )

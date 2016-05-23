@@ -3,7 +3,7 @@ import React from 'react'
 export default () => (
   <group>
     <pointLight
-      color={0xffffff}
+      color={0x666666}
       position={new THREE.Vector3(0, 0, 0)}
     />
     <pointLight
@@ -15,7 +15,7 @@ export default () => (
       position={new THREE.Vector3(100, 500, 100)}
     />
     <ambientLight
-      color={0x666666}
+      color={0xaaaaaa}
     />
   </group>
 )
