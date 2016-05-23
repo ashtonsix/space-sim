@@ -71,8 +71,13 @@ module.exports = (options = {}) => {
         },
         {
           test: /\.json$/,
-          loaders: ['json'],
-        }],
+          loader: 'json',
+        },
+        {
+          test: /\.gl\.(vert|frag)$/,
+          loader: 'raw',
+        },
+      ],
     },
   }
 }

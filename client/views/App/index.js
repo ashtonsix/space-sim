@@ -1,6 +1,6 @@
 import React from 'react'
 import {connect} from '_utils/redux-plus'
-import Scene from './Scene'
+import Scene from '../Scene'
 
 const App = connect(state => ({state}))(
 class App extends React.Component {

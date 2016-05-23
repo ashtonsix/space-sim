@@ -14,3 +14,6 @@ setTimeout(() => {
   browserHistory.push('/example-location')
   store.dispatch('GET_DATA')
 }, 2000)
+
+// dev indicator
+console.log(`session: ${Math.random().toString(36).slice(2)}`)
