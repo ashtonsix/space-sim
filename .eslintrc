@@ -27,7 +27,7 @@
     // do not care
     "react/prop-types": 0,
     // NODE_PATH in use
-    "import/no-unresolved": [2, {ignore: ["^server", "^client", "^_utils", "^store"]}],
+    "import/no-unresolved": [2, {ignore: ["^server", "^client", "^_utils", "^store", "^services"]}],
     // want custom order plugin
     "import/order": [2, {"groups": ["builtin", "external", "internal", ["parent", "sibling", "index"]]}]
   },

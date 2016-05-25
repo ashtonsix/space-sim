@@ -1,3 +1,4 @@
+import 'services/evtResponse/index'
 import React from 'react'
 import ReactDOM from 'react-dom'
 import {browserHistory} from 'react-router'
@@ -10,10 +11,8 @@ ReactDOM.render(
   document.getElementById('root')
 )
 
-setTimeout(() => {
-  browserHistory.push('/example-location')
-  store.dispatch('GET_DATA')
-}, 2000)
+store.dispatch('GET_DATA')
+browserHistory.push('/example-location')
 
 // dev indicator
 console.log(`session: ${Math.random().toString(36).slice(2)}`)

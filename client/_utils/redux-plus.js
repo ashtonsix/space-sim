@@ -2,7 +2,7 @@
  * All imports from various redux libaries in one place
  */
 
-export {createStore, compose} from 'redux'
+export {createStore, applyMiddleware, compose} from 'redux'
 export {combineReducers, getModel} from 'redux-loop'
 export {handleActions as createReducer} from 'redux-actions'
 export {connect, Provider} from 'react-redux'

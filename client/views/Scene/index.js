@@ -6,35 +6,37 @@ import store from 'store'
 import Camera from './Camera'
 import Lights from './Lights'
 import Planets from './Planets'
-import Sky from './Sky'
 
 const Scene = connect(
-  state => ({planets: state.celestialObjects.planets})
+  state => ({planets: state.celestialObjects.planets, camera: state.camera})
 )(
-({planets}) => {
-  const width = window.innerWidth
-  const height = window.innerHeight
-  const fog = new THREE.Fog(0xffffff, 1, 5000)
-  fog.color.setHSL(0.6, 0, 1)
+({planets, camera}) => {
+  const width = window.outerWidth - 100
+  const height = window.outerHeight - 125
+  const fog = new THREE.Fog(0x00000, 1, 1000)
 
   return (
-    <React3
-      mainCamera="camera"
-      width={width}
-      height={height}
-      alpha
-      clearAlpha={0}
-      onAnimate={() => store.dispatch('TICK')}
+    <div
+      id={'scene'}
+      onClick={() => store.dispatch('FOCUS_SCENE')}
     >
-      <scene
-        fog={fog}
+      <React3
+        mainCamera="camera"
+        width={width}
+        height={height}
+        alpha
+        clearAlpha={1}
+        onAnimate={() => store.dispatch('TICK')}
       >
-        <Camera aspect={width / height} />
-        <Lights />
-        <Planets planets={planets} />
-        <Sky />
-      </scene>
-    </React3>
+        <scene
+          fog={fog}
+        >
+          <Camera aspect={width / height} {...camera} />
+          <Lights />
+          <Planets planets={planets} />
+        </scene>
+      </React3>
+    </div>
   )
 })
 

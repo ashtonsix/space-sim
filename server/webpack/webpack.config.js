@@ -8,7 +8,7 @@ module.exports = (options = {}) => {
   const {quiet = false} = options
 
   return {
-    devtool: DEVELOPMENT ? 'eval' : 'source-map',
+    devtool: 'source-map',
     entry: [
       DEVELOPMENT && `webpack-dev-server/client?http://localhost:${services.webpack.port}`,
       './client/index',
