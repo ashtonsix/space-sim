@@ -6,7 +6,7 @@ const createPlanet = ({name, position, radius}) => (
     position={new THREE.Vector3(...position.map(v => v / 5000000))}
   >
     <sphereGeometry
-      radius={Math.pow(radius, 0.4) / 25}
+      radius={radius / 250000 + 0.2}
       widthSegments={32}
       heightSegments={32}
     />
