@@ -1,18 +1,18 @@
 import keyResponse from '_utils/interaction/keyResponse'
 import store from 'store'
 
-let refocusSceneOnShiftKeyUp = false
-keyResponse('shift', () => {
+let refocusSceneOnCtrlKeyUp = false
+keyResponse('ctrl', () => {
   if (store.getState().meta.sceneIsFocussed) {
     store.dispatch('UNFOCUS_SCENE')
-    refocusSceneOnShiftKeyUp = true
+    refocusSceneOnCtrlKeyUp = true
   }
 })
 
-keyResponse('shift', () => {
-  if (refocusSceneOnShiftKeyUp) {
+keyResponse('ctrl', () => {
+  if (refocusSceneOnCtrlKeyUp) {
     store.dispatch('FOCUS_SCENE')
-    refocusSceneOnShiftKeyUp = false
+    refocusSceneOnCtrlKeyUp = false
   }
 }, 'keyup')
 

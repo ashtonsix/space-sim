@@ -3,7 +3,7 @@ import vector, {addVectors} from '_utils/vector'
 import keysDown from 'services/keysDown'
 
 const {sin, cos} = Math
-const updatePosition = (position, _r) => {
+const updatePosition = (position, _r, {speed}) => {
   const r = vector(_r)
   return addVectors(
     position,
@@ -14,6 +14,7 @@ const updatePosition = (position, _r) => {
           a: [-1, 0, 0], d: [1, 0, 0],
           r: [0, -1, 0], f: [0, 1, 0]})[k])
       .filter(v => v)
+      .map(v => v.map(vi => vi * speed * (keysDown.shift ? 10 : 1)))
       .reduce(addVectors, vector())
       .translateByEuler(r))
 }
@@ -49,7 +50,7 @@ const updateRotationMouse = ([x, y, z], {deltaX: _dx, deltaY: _dy}) => {
 // that may accelerate arbitarily (ex: a rocket)
 export default createReducer({
   TICK: ({position, rotation, ...state}) => ({
-    position: updatePosition(position, rotation),
+    position: updatePosition(position, rotation, {speed: 0.2}),
     rotation: updateRotationTick(rotation).map(v => v % (2 * Math.PI)),
     ...state,
   }),
