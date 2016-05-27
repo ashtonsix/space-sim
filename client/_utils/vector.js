@@ -6,34 +6,57 @@
 
 const helpers = {}
 
-const vector = (_v = [0, 0, 0]) => {
-  const values = {
-    x: _v[0] !== undefined ? _v[0] : _v.x,
-    y: _v[1] !== undefined ? _v[1] : _v.y,
-    z: _v[2] !== undefined ? _v[2] : _v.z,
-  }
-  const v = []
-  const map = {0: 'x', 1: 'y', 2: 'z', x: 'x', y: 'y', z: 'z'}
+const vector = (_vec = [0, 0, 0], ordering = 'xyzw') => {
+  const vec = ordering.split('')
+    .map((k, i) => _vec[i] !== undefined ? _vec[i] : _vec[k])
+    .filter(v => v !== undefined)
 
-  _.mapValues(map, (k, kI) =>
-    Object.defineProperty(v, kI, {
-      enumerable: typeof kI === 'number',
-      get() { return values[k] },
-      set(val) { values[k] = val },
+  vec.forEach((v, i) =>
+    Object.defineProperty(vec, ordering[i], {
+      get() { return vec[i] },
+      set(val) { vec[i] = val },
     })
   )
 
-  Object.assign(v, _.mapValues(helpers, helper => helper.bind(null, v)))
+  Object.assign(vec, _.mapValues(helpers, helper => helper.bind(null, vec)))
 
-  return v
+  return vec
 }
 
-export const addVectors = (_v0 = [0, 0, 0], _v1 = [0, 0, 0]) => {
-  const v0 = vector(_v0)
-  const v1 = vector(_v1)
-  return vector(v0.map((v, i) => v + v1[i]))
-}
+export const mapVectors = _.curry(
+  (f, _vec0 = [0, 0, 0], _vec1 = [0, 0, 0]) => {
+    const vec0 = vector(_vec0)
+    const vec1 = vector(_vec1)
+    return vector(vec0.map((v, i) => f(v, vec1[i])))
+  },
+  3
+)
+export const mapBy = mapVectors
+helpers.mapBy = _.rearg(mapVectors, [1, 0, 2])
+
+export const addVectors = mapVectors((v0, v1) => v0 + v1)
+export const add = addVectors
 helpers.add = addVectors
+
+export const subVectors = mapVectors((v0, v1) => v0 - v1)
+export const sub = subVectors
+helpers.sub = subVectors
+
+export const subtractVectors = mapVectors((v0, v1) => v0 - v1)
+export const subtract = subtractVectors
+helpers.subtract = subtractVectors
+
+export const multiplyVectors = mapVectors((v0, v1) => v0 * v1)
+export const multiply = multiplyVectors
+helpers.multiply = multiplyVectors
+
+export const vectorProduct = (...args) => multiplyVectors(...args).reduce((pv, v) => pv + v)
+export const product = vectorProduct
+helpers.product = vectorProduct
+
+export const vectorSum = (...args) => addVectors(...args).reduce((pv, v) => pv + v)
+export const sum = vectorSum
+helpers.sum = vectorSum
 
 const {cos, sin} = Math
 const splitHypotenuse = [
@@ -58,10 +81,14 @@ const splitHypotenuse = [
   },
 ]
 
+/**
+ * Useful for converting deltas from world co-ordinates (z, x, y) to local
+ * co-ordinates (up, down, left, right, forwards, backwards)
+ * @param  _vec   [x, y, z] (distance)
+ * @param  _euler [x, y, z] (radians)
+ * @return        [x, y, z] (distance)
+ */
 export const translateVectorByEuler = (_vec, _euler) => {
-  // ({w: [0, 0, -1], s: [0, 0, 1],
-  //   a: [-cos(r.z), -sin(r.z), 0], d: [cos(r.z), sin(r.z), 0],
-  //   r: [-sin(r.z), cos(r.z), 0], f: [sin(r.z), -cos(r.z), 0]})
   const rz = _euler[2]
   const vec = [
     (cos(rz) * _vec[0]) + (sin(rz) * _vec[1]),
@@ -76,5 +103,12 @@ export const translateVectorByEuler = (_vec, _euler) => {
   return result
 }
 helpers.translateByEuler = translateVectorByEuler
+
+export const vectorMagnitude = vec =>
+  vector(vec.map(val => val ** 2).reduce((pv, v) => pv + v, 0) ** 0.5)
+export const magnitude = vectorMagnitude
+export const mag = vectorMagnitude
+helpers.magnitude = vectorMagnitude
+helpers.mag = vectorMagnitude
 
 export default vector

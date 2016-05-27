@@ -1,4 +1,4 @@
-const G = 6.673848e-11
+export const G = 6.673848e-11
 const PI = Math.PI
 
 export const gravity = (mass, distance) =>
