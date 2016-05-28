@@ -1,11 +1,11 @@
 import {createReducer} from '_utils/redux-plus'
-import vector, {addVectors} from '_utils/vector'
+import vector, * as vec from '_utils/vector'
 import keysDown from 'services/keysDown'
 
 const {sin, cos} = Math
 const updatePosition = (position, _r, {speed}) => {
   const r = vector(_r)
-  return addVectors(
+  return vec.add(
     position,
     _.toPairs(keysDown)
       .filter(([, v]) => v)
@@ -15,7 +15,7 @@ const updatePosition = (position, _r, {speed}) => {
           r: [0, -1, 0], f: [0, 1, 0]})[k])
       .filter(v => v)
       .map(v => v.map(vi => vi * speed * (keysDown.shift ? 10 : 1)))
-      .reduce(addVectors, vector())
+      .reduce((pv, v) => pv.add(v), vector())
       .translateByEuler(r))
 }
 

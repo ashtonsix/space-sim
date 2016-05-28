@@ -6,10 +6,13 @@
 
 const helpers = {}
 
-const vector = (_vec = [0, 0, 0], ordering = 'xyzw') => {
-  const vec = ordering.split('')
-    .map((k, i) => _vec[i] !== undefined ? _vec[i] : _vec[k])
-    .filter(v => v !== undefined)
+const vector = (_vec = 3, _ordering) => {
+  const ordering = typeof _ordering === 'string' ? _ordering : 'xyzw'
+  const vec = typeof _vec === 'number' ?
+    _.range(_vec).fill(0) :
+    ordering.split('')
+      .map((k, i) => _vec[i] !== undefined ? _vec[i] : _vec[k])
+      .filter(v => v !== undefined)
 
   vec.forEach((v, i) =>
     Object.defineProperty(vec, ordering[i], {
@@ -23,40 +26,38 @@ const vector = (_vec = [0, 0, 0], ordering = 'xyzw') => {
   return vec
 }
 
-export const mapVectors = _.curry(
-  (f, _vec0 = [0, 0, 0], _vec1 = [0, 0, 0]) => {
-    const vec0 = vector(_vec0)
-    const vec1 = vector(_vec1)
-    return vector(vec0.map((v, i) => f(v, vec1[i])))
+export const map = _.curry(
+  (f, ..._vectors) => {
+    const vectors = _vectors.map(vector)
+    if (vectors.find(vec => vec.length !== vectors[0].length)) {
+      return console.warning(`Vectors must be same size: [${_.map(vectors, 'length').join(', ')}]`)
+    }
+    const result = vector(_.range(vectors[0].length)
+      .map(i => f(..._.map(vectors, i))))
+    return result
   },
-  3
+  2
 )
-export const mapBy = mapVectors
-helpers.mapBy = _.rearg(mapVectors, [1, 0, 2])
+helpers.map = _.rearg(map, [1, 0])
 
-export const addVectors = mapVectors((v0, v1) => v0 + v1)
-export const add = addVectors
-helpers.add = addVectors
-
-export const subVectors = mapVectors((v0, v1) => v0 - v1)
-export const sub = subVectors
-helpers.sub = subVectors
-
-export const subtractVectors = mapVectors((v0, v1) => v0 - v1)
-export const subtract = subtractVectors
-helpers.subtract = subtractVectors
-
-export const multiplyVectors = mapVectors((v0, v1) => v0 * v1)
-export const multiply = multiplyVectors
-helpers.multiply = multiplyVectors
-
-export const vectorProduct = (...args) => multiplyVectors(...args).reduce((pv, v) => pv + v)
-export const product = vectorProduct
-helpers.product = vectorProduct
-
-export const vectorSum = (...args) => addVectors(...args).reduce((pv, v) => pv + v)
-export const sum = vectorSum
-helpers.sum = vectorSum
+export const add = map((...values) => values.reduce((pv, v) => pv + v))
+export const subtract = map((...values) => values.reduce((pv, v) => pv - v))
+export const sub = subtract
+export const multiply = map((...values) => values.reduce((pv, v) => pv * v))
+export const mult = multiply
+export const product = (...args) => multiply(...args).reduce((pv, v) => pv + v)
+export const sum = (...args) => add(...args).reduce((pv, v) => pv + v)
+export const magnitude = vec => vec.map(val => val ** 2).reduce((pv, v) => pv + v, 0) ** 0.5
+export const mag = magnitude
+helpers.add = add
+helpers.subtract = subtract
+helpers.sub = subtract
+helpers.multiply = multiply
+helpers.mult = mult
+helpers.product = product
+helpers.sum = sum
+helpers.magnitude = magnitude
+helpers.mag = magnitude
 
 const {cos, sin} = Math
 const splitHypotenuse = [
@@ -95,20 +96,12 @@ export const translateVectorByEuler = (_vec, _euler) => {
     (sin(rz) * _vec[0]) - (cos(rz) * _vec[1]),
     _vec[2]]
   const euler = vector(_euler)
-  const result = _.chain(vec)
-    .map((val, i) => splitHypotenuse[i](val, euler))
-    .reduce(addVectors)
-    .value()
+  const result = add(...vec
+    .map((val, i) => splitHypotenuse[i](val, euler)))
 
   return result
 }
 helpers.translateByEuler = translateVectorByEuler
 
-export const vectorMagnitude = vec =>
-  vector(vec.map(val => val ** 2).reduce((pv, v) => pv + v, 0) ** 0.5)
-export const magnitude = vectorMagnitude
-export const mag = vectorMagnitude
-helpers.magnitude = vectorMagnitude
-helpers.mag = vectorMagnitude
 
 export default vector
