@@ -1,6 +1,6 @@
 /* eslint camelcase:0 */
 
-import * as vec from '_utils/vector'
+import * as vec from '_utils/formulas/geometry/vector'
 import newtonsMethod from '_utils/formulas/newtonsMethod'
 import {G} from '_utils/formulas/gravity'
 

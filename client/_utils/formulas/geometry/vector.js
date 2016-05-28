@@ -59,49 +59,4 @@ helpers.sum = sum
 helpers.magnitude = magnitude
 helpers.mag = magnitude
 
-const {cos, sin} = Math
-const splitHypotenuse = [
-  (hypotenuse, theta) => {
-    const x = cos(theta.y) * hypotenuse
-    const z = -sin(theta.y) * hypotenuse
-    return vector([x, 0, z])
-  },
-  (hypotenuse, theta) => {
-    const y = cos(theta.x) * hypotenuse
-    const zxHypotenuse = sin(theta.x) * hypotenuse
-    const x = sin(theta.y) * zxHypotenuse
-    const z = cos(theta.y) * zxHypotenuse
-    return vector([x, y, z])
-  },
-  (hypotenuse, theta) => {
-    const y = -(sin(theta.x) * hypotenuse)
-    const zxHypotenuse = cos(theta.x) * hypotenuse
-    const x = sin(theta.y) * zxHypotenuse
-    const z = cos(theta.y) * zxHypotenuse
-    return vector([x, y, z])
-  },
-]
-
-/**
- * Useful for converting deltas from world co-ordinates (z, x, y) to local
- * co-ordinates (up, down, left, right, forwards, backwards)
- * @param  _vec   [x, y, z] (distance)
- * @param  _euler [x, y, z] (radians)
- * @return        [x, y, z] (distance)
- */
-export const translateVectorByEuler = (_vec, _euler) => {
-  const rz = _euler[2]
-  const vec = [
-    (cos(rz) * _vec[0]) + (sin(rz) * _vec[1]),
-    (sin(rz) * _vec[0]) - (cos(rz) * _vec[1]),
-    _vec[2]]
-  const euler = vector(_euler)
-  const result = add(...vec
-    .map((val, i) => splitHypotenuse[i](val, euler)))
-
-  return result
-}
-helpers.translateByEuler = translateVectorByEuler
-
-
 export default vector
