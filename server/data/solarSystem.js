@@ -35,7 +35,8 @@ export default (req, res) => {
     },
     (e, r) => {
       if (e) return res.status(500).send({errors: ['request to astro-phys.com failed']})
-      let planets = _.chain(JSON.parse(r.body).results)
+      const body = JSON.parse(r.body)
+      let planets = _.chain(body.results)
         .mapKeys((v, k) => ({earthmoon: 'earth', geomoon: 'moon'})[k] || k)
         .mapValues(([position, velocity]) => ({position, velocity}))
         .mapValues((v, k) => ({name: k, ...planetData[k], ...v}))
@@ -43,7 +44,7 @@ export default (req, res) => {
       planets.earth = fixEarthPosition(planets.earth, planets.moon)
       planets.moon = fixMoonPosition(planets.moon, planets.earth)
       planets = _.values(planets)
-      return res.send({data: {planets, date: moment(date).toDate()}})
+      return res.send({data: {planets, date: body.date}})
     }
   )
 }

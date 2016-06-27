@@ -1,8 +1,8 @@
 export const G = 6.673848e-11
-const PI = Math.PI
+const {PI, abs} = Math
 
 export const gravity = (mass, distance) =>
-  (G * mass) / (distance ** 2)
+  (G * mass) / abs(distance ** 2)
 
 // For visualization. Handles values both inside/outside bodies
 // http://physics.stackexchange.com/questions/245861/how-to-visualize-gravity-fields
